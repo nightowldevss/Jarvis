@@ -113,45 +113,33 @@ def _download_vosk():
         warn(f"Download Vosk fallito: {e}")
 
 def build_exe():
-    """Compila gui.py in .exe con PyInstaller — protegge il codice sorgente."""
-    step("Compilazione eseguibile (protegge il codice)")
-    icon_arg = f"--icon={ICON_FILE}" if os.path.exists(ICON_FILE) else ""
-    vosk_arg = f"--add-data={VOSK_DIR};vosk-model-it" if os.path.exists(VOSK_DIR) else ""
+    """Compila i .py in .pyc e rimuove i sorgenti per proteggere il codice."""
+    step("Protezione codice sorgente")
+    import compileall
+    import py_compile
 
-    cmd = [
-        sys.executable, "-m", "PyInstaller",
-        "--noconfirm",
-        "--onefile",
-        "--windowed",          # nessun terminale
-        "--name", "Jarvis",
-        f"--distpath={INSTALL_DIR}",
-        f"--workpath={os.path.join(tempfile.gettempdir(), 'jarvis_build')}",
-        f"--specpath={tempfile.gettempdir()}",
-    ]
-    if icon_arg: cmd.append(icon_arg)
-    if vosk_arg: cmd.append(vosk_arg)
+    protected = ["gui", "commands", "listener", "speaker", "memory", "updater", "main"]
 
-    # Aggiungi tutti i file dati necessari
-    for f in ["config.py", "version.json", "jarvis.ico"]:
-        src = os.path.join(INSTALL_DIR, f)
-        if os.path.exists(src):
-            cmd.append(f"--add-data={src};.")
+    for name in protected:
+        src = os.path.join(INSTALL_DIR, f"{name}.py")
+        if not os.path.exists(src):
+            warn(f"{name}.py non trovato")
+            continue
+        try:
+            # Compila in .pyc
+            py_compile.compile(src, cfile=os.path.join(INSTALL_DIR, f"{name}.pyc"), optimize=2)
+            # Rimuovi il sorgente
+            os.remove(src)
+            ok(f"{name}.py -> {name}.pyc")
+        except Exception as e:
+            warn(f"{name}: {e}")
 
-    cmd.append(os.path.join(INSTALL_DIR, "gui.py"))
-
-    r = subprocess.run(cmd, capture_output=True, text=True)
-    if r.returncode == 0:
-        ok("Eseguibile creato: Jarvis.exe")
-        # Rimuovi i .py dall'installazione (codice protetto)
-        for f in FILES_TO_COPY:
-            if f.endswith(".py") and f not in ("config.py",):
-                p = os.path.join(INSTALL_DIR, f)
-                if os.path.exists(p):
-                    os.remove(p)
-        ok("File sorgente rimossi (codice protetto)")
-    else:
-        warn("Compilazione fallita, Jarvis funzionera' con i file .py")
-        warn(r.stderr[-300:] if r.stderr else "")
+    # Crea un launcher .bat invisibile che avvia gui.pyc
+    launcher = os.path.join(INSTALL_DIR, "Jarvis.bat")
+    pythonw  = sys.executable.replace("python.exe", "pythonw.exe")
+    with open(launcher, "w") as f:
+        f.write(f'@echo off\n"{pythonw}" "{os.path.join(INSTALL_DIR, "gui.pyc")}"\n')
+    ok("Launcher creato")
 
 def create_shortcut():
     step("Creazione collegamento Desktop con icona")
@@ -159,14 +147,15 @@ def create_shortcut():
         import winshell
         desktop = winshell.desktop()
         lnk     = os.path.join(desktop, "Jarvis.lnk")
-        exe     = os.path.join(INSTALL_DIR, "Jarvis.exe")
-        # Se exe non esiste usa pythonw
-        if not os.path.exists(exe):
-            target = sys.executable.replace("python.exe", "pythonw.exe")
-            args   = f'"{os.path.join(INSTALL_DIR, "gui.py")}"'
-        else:
-            target = exe
+        bat     = os.path.join(INSTALL_DIR, "Jarvis.bat")
+        pythonw = sys.executable.replace("python.exe", "pythonw.exe")
+        # Usa il .bat se esiste, altrimenti pythonw + gui.pyc
+        if os.path.exists(bat):
+            target = bat
             args   = ""
+        else:
+            target = pythonw
+            args   = f'"{os.path.join(INSTALL_DIR, "gui.py")}"'
         with winshell.shortcut(lnk) as s:
             s.path              = target
             s.arguments         = args
