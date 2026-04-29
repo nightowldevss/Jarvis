@@ -8,7 +8,7 @@ import urllib.request
 from packaging.version import Version
 
 # URL del file version.json sul tuo server — cambia con il tuo URL reale
-VERSION_URL  = "https://tuosito.com/jarvis/version.json"
+VERSION_URL  = "https://raw.githubusercontent.com/nightowldevss/jarvis/main/version.json"
 CURRENT_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "version.json")
 
 _notify_callback = None   # GUI chiama questo per mostrare il popup

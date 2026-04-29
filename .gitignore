@@ -1,0 +1,7 @@
+config.py
+__pycache__/
+*.pyc
+data/
+tail.txt
+test_mic.py
+test_voice.py
