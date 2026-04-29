@@ -1,0 +1,20 @@
+
+# Collega il pulsante profilo ora che la funzione esiste
+_profile_btn.config(command=open_profile_settings)
+
+
+# ── Callback ──────────────────────────────────────────────────────────────────
+def on_amplitude(amp):
+    global current_amplitude
+    current_amplitude = amp
+
+set_amplitude_callback(on_amplitude)
+speaker_set_log(on_log)
+cmd_set_log(on_log)
+set_shutdown_callback(lambda: root.after(0, toggle))
+
+# ── Avvio ─────────────────────────────────────────────────────────────────────
+add_message("Sistema inizializzato. Premi ATTIVA per iniziare.", "jarvis")
+draw_sphere()
+draw_bars()
+root.mainloop()
