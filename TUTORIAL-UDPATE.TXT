@@ -1,0 +1,44 @@
+📖 Come rilasciare un aggiornamento
+1. Modifica il codice
+Fai le modifiche che vuoi ai file .py nella cartella c:\xampp\htdocs\Jarvis
+
+2. Aggiorna la versione
+Apri version.json e cambia il numero di versione:
+{
+  "version": "1.0.1",
+  "notes": "Descrizione delle novità di questa versione.",
+  "url": "https://github.com/nightowldevss/Jarvis/releases/latest/download/Jarvis-Setup.exe"
+}
+
+3. Genera il nuovo installer
+python build_installer.py
+
+4. Pusha su GitHub
+git add .
+git commit -m "Release v1.0.1 - descrizione modifiche"
+git push origin newmain:main
+
+5. Crea la nuova Release su GitHub
+Vai su github.com/nightowldevss/Jarvis/releases/new
+
+Tag: v1.0.1
+
+Titolo: Jarvis v1.0.1
+
+Incolla la descrizione delle novità
+
+Trascina il nuovo Jarvis-Setup.exe nella sezione Assets
+
+Clicca Publish release
+
+6. Gli utenti ricevono la notifica automaticamente
+Al prossimo avvio di Jarvis, tutti gli utenti vedranno il popup:
+
+┌─────────────────────────────────┐
+│  Aggiornamento disponibile!     │
+│  Versione 1.0.1                 │
+│  Descrizione novità...          │
+│  [Aggiorna ora]  [Più tardi]    │
+└─────────────────────────────────┘
+
+Cliccando Aggiorna ora scarica e installa automaticamente.

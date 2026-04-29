@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>J.A.R.V.I.S — Assistente Vocale</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <canvas id="bg-canvas"></canvas>
+
+  <!-- NAV -->
+  <nav id="navbar">
+    <div class="nav-inner">
+      <span class="logo">J.A.R.V.I.S</span>
+      <div class="nav-right">
+        <a href="#features" data-i18n="nav_features">Funzionalità</a>
+        <a href="#commands" data-i18n="nav_commands">Comandi</a>
+        <a href="#download" data-i18n="nav_download">Download</a>
+        <button class="lang-btn" id="langToggle">🌐 EN</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-content">
+      <div class="badge" data-i18n="badge">v1.0.0 — Ora disponibile</div>
+      <h1><span class="gradient-text">J.A.R.V.I.S</span></h1>
+      <p class="hero-sub" data-i18n="hero_sub">Il tuo assistente vocale intelligente per Windows.<br>Parla. Lui ascolta. Tutto il resto è automatico.</p>
+      <div class="hero-actions">
+        <a href="https://github.com/nightowldevss/Jarvis/releases/latest/download/Jarvis-Setup.exe" class="btn-primary" id="downloadBtn">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          <span data-i18n="download_btn">Scarica per Windows</span>
+        </a>
+        <a href="https://github.com/nightowldevss/Jarvis" class="btn-ghost" target="_blank">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+          GitHub
+        </a>
+      </div>
+      <p class="hero-note" data-i18n="hero_note">Windows 10/11 · Python 3.9+ · Gratuito e open source</p>
+    </div>
+    <div class="hero-visual">
+      <div class="orb-container">
+        <div class="orb"></div>
+        <div class="orb-ring r1"></div>
+        <div class="orb-ring r2"></div>
+        <div class="orb-ring r3"></div>
+        <div class="pulse-dot d1"></div>
+        <div class="pulse-dot d2"></div>
+        <div class="pulse-dot d3"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section id="features">
+    <div class="section-inner">
+      <h2 class="section-title" data-i18n="feat_title">Cosa può fare</h2>
+      <p class="section-sub" data-i18n="feat_sub">Tutto quello che ti aspetti da un assistente moderno, e qualcosa in più.</p>
+      <div class="features-grid">
+        <div class="feat-card" data-delay="0">
+          <div class="feat-icon">🎙️</div>
+          <h3 data-i18n="f1_title">Riconoscimento vocale</h3>
+          <p data-i18n="f1_desc">Ascolta in tempo reale con Vosk offline o Google Speech. Nessun cloud obbligatorio.</p>
+        </div>
+        <div class="feat-card" data-delay="100">
+          <div class="feat-icon">🤖</div>
+          <h3 data-i18n="f2_title">AI con OpenAI</h3>
+          <p data-i18n="f2_desc">Collega la tua chiave API per risposte intelligenti e conversazioni naturali.</p>
+        </div>
+        <div class="feat-card" data-delay="200">
+          <div class="feat-icon">⚡</div>
+          <h3 data-i18n="f3_title">Hotkey istantanea</h3>
+          <p data-i18n="f3_desc">Ctrl+Shift+J per attivarlo ovunque, senza toccare il mouse.</p>
+        </div>
+        <div class="feat-card" data-delay="300">
+          <div class="feat-icon">🏠</div>
+          <h3 data-i18n="f4_title">Smart Home</h3>
+          <p data-i18n="f4_desc">Integrazione con Philips Hue per controllare le luci di casa con la voce.</p>
+        </div>
+        <div class="feat-card" data-delay="400">
+          <div class="feat-icon">📧</div>
+          <h3 data-i18n="f5_title">Email vocali</h3>
+          <p data-i18n="f5_desc">Leggi e invia email Gmail senza aprire il browser, solo con la voce.</p>
+        </div>
+        <div class="feat-card" data-delay="500">
+          <div class="feat-icon">🔒</div>
+          <h3 data-i18n="f6_title">Privacy first</h3>
+          <p data-i18n="f6_desc">Funziona anche offline. I tuoi dati restano sul tuo PC.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMMANDS -->
+  <section id="commands">
+    <div class="section-inner">
+      <h2 class="section-title" data-i18n="cmd_title">Comandi vocali</h2>
+      <p class="section-sub" data-i18n="cmd_sub">Dì solo "Jarvis" e poi uno di questi comandi.</p>
+      <div class="commands-list">
+        <div class="cmd-item"><span class="cmd-voice">"Jarvis, che ore sono"</span><span class="cmd-action" data-i18n="c1">Dice l'orario attuale</span></div>
+        <div class="cmd-item"><span class="cmd-voice">"Jarvis, apri Chrome"</span><span class="cmd-action" data-i18n="c2">Apre Google Chrome</span></div>
+        <div class="cmd-item"><span class="cmd-voice">"Jarvis, metti [canzone]"</span><span class="cmd-action" data-i18n="c3">Cerca su YouTube</span></div>
+        <div class="cmd-item"><span class="cmd-voice">"Jarvis, traduci [testo] in inglese"</span><span class="cmd-action" data-i18n="c4">Traduce il testo</span></div>
+        <div class="cmd-item"><span class="cmd-voice">"Jarvis, ultime notizie"</span><span class="cmd-action" data-i18n="c5">Legge le notizie</span></div>
+        <div class="cmd-item"><span class="cmd-voice">"Jarvis, imposta timer 5 minuti"</span><span class="cmd-action" data-i18n="c6">Avvia un timer</span></div>
+        <div class="cmd-item"><span class="cmd-voice">"Jarvis, quanto fa 15 per 8"</span><span class="cmd-action" data-i18n="c7">Calcola</span></div>
+        <div class="cmd-item"><span class="cmd-voice">"Jarvis, apri documenti"</span><span class="cmd-action" data-i18n="c8">Apre la cartella</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DOWNLOAD -->
+  <section id="download">
+    <div class="section-inner">
+      <div class="download-card">
+        <div class="download-glow"></div>
+        <h2 data-i18n="dl_title">Pronto a iniziare?</h2>
+        <p data-i18n="dl_sub">Un solo file. Nessuna configurazione obbligatoria. Funziona subito.</p>
+        <a href="https://github.com/nightowldevss/Jarvis/releases/latest/download/Jarvis-Setup.exe" class="btn-primary large">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          <span data-i18n="download_btn">Scarica per Windows</span>
+        </a>
+        <div class="dl-meta">
+          <span>v1.0.0</span>
+          <span>·</span>
+          <span data-i18n="dl_free">Gratuito</span>
+          <span>·</span>
+          <span>Open Source</span>
+          <span>·</span>
+          <span>Windows 10/11</span>
+        </div>
+        <p class="dl-note" data-i18n="dl_note">Se Windows blocca il file: tasto destro → Proprietà → Sblocca</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <span class="logo">J.A.R.V.I.S</span>
+      <p data-i18n="footer_made">Fatto con ❤️ da <a href="https://github.com/nightowldevss" target="_blank">nightowldevss</a></p>
+      <div class="footer-links">
+        <a href="https://github.com/nightowldevss/Jarvis" target="_blank">GitHub</a>
+        <a href="https://github.com/nightowldevss/Jarvis/releases" target="_blank" data-i18n="footer_releases">Releases</a>
+        <a href="https://github.com/nightowldevss/Jarvis/issues" target="_blank" data-i18n="footer_issues">Segnala un bug</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
