@@ -1,5 +1,5 @@
 {
-  "version": "1.0.0",
-  "notes": "Prima release ufficiale di Jarvis.",
+  "version": "1.0.2",
+  "notes": "Fix comando Discord che apriva lo spazio disco. Fix log duplicato nella chat.",
   "url": "https://github.com/nightowldevss/Jarvis/releases/latest/download/Jarvis-Setup.exe"
 }
