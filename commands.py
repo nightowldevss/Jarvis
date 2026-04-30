@@ -90,24 +90,35 @@ _SYNONYMS = {
     "ram":           ["ram", "memoria ram", "uso memoria"],
     "cpu":           ["cpu", "processore", "uso processore", "utilizzo cpu"],
     "disco":         ["disco", "spazio disco", "spazio libero", "hard disk"],
-    "chrome":        ["chrome", "google chrome", "apri chrome"],
-    "google":        ["cerca su google", "fai una ricerca", "cerca su internet", "cerca in rete"],
-    "youtube":       ["youtube", "apri youtube"],
-    "netflix":       ["netflix", "apri netflix"],
-    "spotify":       ["spotify", "apri spotify"],
-    "whatsapp":      ["whatsapp", "apri whatsapp"],
-    "gmail":         ["gmail", "apri gmail", "apri email", "posta elettronica"],
-    "instagram":     ["instagram", "apri instagram"],
-    "twitter":       ["twitter", "apri twitter"],
-    "notepad":       ["blocco note", "notepad", "apri blocco note"],
-    "calc":          ["calcolatrice", "apri calcolatrice"],
-    "explorer":      ["esplora file", "file explorer", "cartelle", "apri esplora"],
-    "taskman":       ["task manager", "gestione attivita", "processi"],
-    "settings":      ["impostazioni", "settings", "pannello di controllo"],
-    "screenshot":    ["screenshot", "schermata", "cattura schermo", "foto schermo"],
-    "paint":         ["paint", "apri paint"],
-    "word":          ["word", "apri word", "microsoft word"],
-    "excel":         ["excel", "apri excel", "foglio di calcolo"],
+    "chrome":        ["chrome", "google chrome", "apri chrome", "apri google chrome",
+                      "lancia chrome", "avvia chrome", "vai su chrome"],
+    "google":        ["cerca su google", "fai una ricerca", "cerca su internet", "cerca in rete",
+                      "ricerca su google", "ricerca su chrome", "cerca su chrome",
+                      "fai una ricerca su chrome", "fai una ricerca su google",
+                      "cerca online", "vai su google", "apri google"],
+    "youtube":       ["youtube", "apri youtube", "vai su youtube", "lancia youtube",
+                      "cerca su youtube", "ricerca su youtube"],
+    "netflix":       ["netflix", "apri netflix", "vai su netflix", "lancia netflix"],
+    "spotify":       ["spotify", "apri spotify", "vai su spotify", "lancia spotify"],
+    "whatsapp":      ["whatsapp", "apri whatsapp", "vai su whatsapp"],
+    "gmail":         ["gmail", "apri gmail", "apri email", "posta elettronica", "vai su gmail"],
+    "instagram":     ["instagram", "apri instagram", "vai su instagram"],
+    "twitter":       ["twitter", "apri twitter", "vai su twitter", "apri x"],
+    "tiktok":        ["tiktok", "apri tiktok", "vai su tiktok"],
+    "maps":          ["maps", "google maps", "apri maps", "come arrivo", "indicazioni per", "naviga verso"],
+    "amazon":        ["amazon", "apri amazon", "vai su amazon"],
+    "notepad":       ["blocco note", "notepad", "apri blocco note", "apri notepad", "testo"],
+    "calc":          ["calcolatrice", "apri calcolatrice", "apri la calcolatrice"],
+    "explorer":      ["esplora file", "file explorer", "cartelle", "apri esplora", "gestione file"],
+    "taskman":       ["task manager", "gestione attivita", "processi", "apri task manager"],
+    "settings":      ["impostazioni", "settings", "pannello di controllo", "apri impostazioni"],
+    "screenshot":    ["screenshot", "schermata", "cattura schermo", "foto schermo", "cattura"],
+    "paint":         ["paint", "apri paint", "disegna"],
+    "word":          ["word", "apri word", "microsoft word", "documento word"],
+    "excel":         ["excel", "apri excel", "foglio di calcolo", "foglio excel"],
+    "powerpoint":    ["powerpoint", "apri powerpoint", "presentazione"],
+    "vscode":        ["visual studio code", "vscode", "apri vscode", "apri visual studio"],
+    "discord":       ["discord", "apri discord", "vai su discord", "lancia discord"],
     "spegni_pc":     ["spegni il pc", "spegni il computer", "spegni sistema", "spegni pc"],
     "riavvia_pc":    ["riavvia il pc", "riavvia il computer", "riavvia sistema", "riavvia pc"],
     "blocca_pc":     ["blocca pc", "blocca schermo", "blocca computer", "blocca il pc"],
@@ -290,6 +301,22 @@ def execute(command):
     if _match(c, "twitter"):
         if _require_network(): webbrowser.open("https://www.twitter.com"); speak("Apro Twitter")
         return
+    if _match(c, "tiktok"):
+        if _require_network(): webbrowser.open("https://www.tiktok.com"); speak("Apro TikTok")
+        return
+    if _match(c, "amazon"):
+        if _require_network(): webbrowser.open("https://www.amazon.it"); speak("Apro Amazon")
+        return
+    if _match(c, "maps"):
+        if _require_network():
+            q = _extract_query(c, ["indicazioni per", "come arrivo a", "naviga verso", "maps"])
+            if q:
+                webbrowser.open(f"https://www.google.com/maps/search/{q}")
+                speak(f"Apro Maps per {q}")
+            else:
+                webbrowser.open("https://www.google.com/maps")
+                speak("Apro Google Maps")
+        return
 
     # App locali (offline)
     if _match(c, "notepad"):
@@ -310,6 +337,30 @@ def execute(command):
         subprocess.Popen("winword.exe", shell=True); speak("Apro Word"); return
     if _match(c, "excel"):
         subprocess.Popen("excel.exe", shell=True); speak("Apro Excel"); return
+    if _match(c, "powerpoint"):
+        subprocess.Popen("powerpnt.exe", shell=True); speak("Apro PowerPoint"); return
+    if _match(c, "vscode"):
+        subprocess.Popen("code", shell=True); speak("Apro Visual Studio Code"); return
+    if _match(c, "discord"):
+        # Prova ad aprire l'app installata, altrimenti apre il browser
+        discord_paths = [
+            os.path.join(os.environ.get("LOCALAPPDATA", ""), "Discord", "Update.exe"),
+            os.path.join(os.environ.get("APPDATA", ""), "Microsoft", "Windows", "Start Menu",
+                         "Programs", "Discord Inc", "Discord.lnk"),
+        ]
+        if "chrome" in c or "browser" in c or "web" in c:
+            if _require_network(): webbrowser.open("https://discord.com/app"); speak("Apro Discord nel browser")
+        else:
+            opened = False
+            for path in discord_paths:
+                if os.path.exists(path):
+                    subprocess.Popen([path, "--processStart", "Discord.exe"])
+                    speak("Apro Discord")
+                    opened = True
+                    break
+            if not opened:
+                if _require_network(): webbrowser.open("https://discord.com/app"); speak("Apro Discord nel browser")
+        return
 
     # PC
     if _match(c, "spegni_pc"):

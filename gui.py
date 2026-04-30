@@ -445,9 +445,8 @@ def jarvis_loop():
         if not heard:
             continue
 
-        # Ascolta il comando
+        # Ascolta il comando direttamente senza dire "Dimmi!"
         set_state("listening", "IN ATTESA", C["orange"])
-        speak("Dimmi!")
         command = listen(timeout=8)
 
         if not active:
