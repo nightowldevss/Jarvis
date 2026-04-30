@@ -24,16 +24,28 @@ LOCK_FILE = os.path.join(tempfile.gettempdir(), "jarvis.lock")
 
 def _check_single_instance():
     if os.path.exists(LOCK_FILE):
-        # Jarvis già in esecuzione — mostra messaggio e termina
-        import ctypes
-        ctypes.windll.user32.MessageBoxW(
-            0,
-            "Jarvis e' gia' in esecuzione in background.\nClicca sull'icona nella barra delle applicazioni per riaprirlo.",
-            "J.A.R.V.I.S - Gia' attivo",
-            0x40  # MB_ICONINFORMATION
-        )
-        sys.exit(0)
-    # Crea il file di lock
+        try:
+            with open(LOCK_FILE, "r") as f:
+                pid = int(f.read().strip())
+            # Controlla se il processo è ancora attivo
+            import psutil
+            if psutil.pid_exists(pid):
+                import ctypes
+                ctypes.windll.user32.MessageBoxW(
+                    0,
+                    "Jarvis e' gia' in esecuzione in background.\nClicca sull'icona nella barra delle applicazioni per riaprirlo.",
+                    "J.A.R.V.I.S - Gia' attivo",
+                    0x40
+                )
+                sys.exit(0)
+            else:
+                # Processo morto (PC spento di forza) — rimuovi il lock fantasma
+                os.remove(LOCK_FILE)
+        except Exception:
+            # Lock corrotto o illeggibile — rimuovilo
+            try: os.remove(LOCK_FILE)
+            except Exception: pass
+    # Crea il file di lock con il PID attuale
     with open(LOCK_FILE, "w") as f:
         f.write(str(os.getpid()))
 
